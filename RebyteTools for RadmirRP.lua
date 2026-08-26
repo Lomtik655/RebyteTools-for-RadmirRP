@@ -26,11 +26,9 @@ if not doesFileExist(getWorkingDirectory() .. "\\RebyteToolsFolder\\RebyteToolsF
 	downloadUrlToFile(dw_url, dw_path, function(id, status)
 		if status == dlstatus.STATUS_ENDDOWNLOADDATA then
 			print("Картинка moonloader/RebyteToolsFolder/RebyteToolsFont.png успешно загружена.")
-			sampAddChatMessage("Картинка RebyteToolsFont.png успешно загружена. Перезагрузите скрипт /rbtr", -1)
 			script.reload()
 		end
 	end)
-	
 end
 
 -- Include
