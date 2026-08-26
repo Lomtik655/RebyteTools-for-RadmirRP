@@ -21,12 +21,12 @@ if not doesDirectoryExist(getWorkingDirectory() .. "\\RebyteToolsFolder") then
 end
 if not doesFileExist(getWorkingDirectory() .. "\\RebyteToolsFolder\\RebyteToolsFont.png") then
 	print("Картинка moonloader/RebyteToolsFolder/RebyteToolsFont.png не найдена, начинаю загрузку...")
-	local dw_url = "https://github.com/Lomtik655/SlivsMenu_for_RadmirRP/blob/main/SlivsMenuFolder/SlivsMenuFont.png?raw=true"
+	local dw_url = "https://github.com/Lomtik655/RebyteTools-for-RadmirRP/blob/main/RebyteToolsFolder/RebyteToolsFont.png?raw=true"
 	local dw_path = getWorkingDirectory() .. "\\RebyteToolsFolder\\RebyteToolsFont.png"
 	downloadUrlToFile(dw_url, dw_path, function(id, status)
 		if status == dlstatus.STATUS_ENDDOWNLOADDATA then
 			print("Картинка moonloader/RebyteToolsFolder/RebyteToolsFont.png успешно загружена.")
-			sampAddChatMessage("")
+			sampAddChatMessage("Картинка RebyteToolsFont.png успешно загружена. Перезагрузите скрипт /rbtr", -1)
 			script.reload()
 		end
 	end)
@@ -226,12 +226,12 @@ Ohota.ClearGhosts.v = config.Ohota.ClearGhosts
 
 -- Версия
 local AutoUpdate = {
-	script_vers = 200;
+	script_vers = 100;
 	script_vers_text = "1.00";
 	
-	update_url = "https://github.com/Lomtik655/SlivsMenu_for_RadmirRP/raw/refs/heads/main/update.ini";
+	update_url = "https://github.com/Lomtik655/RebyteTools-for-RadmirRP/raw/refs/heads/main/update.ini";
 	update_path = getWorkingDirectory() .. "/RebyteTools.ini";
-	script_url = "https://github.com/Lomtik655/SlivsMenu_for_RadmirRP/raw/refs/heads/main/SlivsMenu%20for%20RadmirRP.lua";
+	script_url = "https://github.com/Lomtik655/RebyteTools-for-RadmirRP/raw/refs/heads/main/RebyteTools%20for%20RadmirRP.lua";
 	script_path = thisScript().path;
 	
 	update_state = false;
@@ -1390,7 +1390,7 @@ function onReceivePacket(id, bs)
 			bitstreamtext = nil
 		end
 		if _style and _type and l and style3 and length and bitstreamtext then
-			print('Packet: '.._style..'/'.._type..'/'..l..'/'..style3..'/'..length..'/'..bitstreamtext)
+			--print('Packet: '.._style..'/'.._type..'/'..l..'/'..style3..'/'..length..'/'..bitstreamtext)
 			
 			if AutoLogin.Status.v then
 				if bitstreamtext == "Authorization" then
