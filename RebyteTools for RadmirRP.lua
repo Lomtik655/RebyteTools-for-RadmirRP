@@ -253,8 +253,7 @@ function main()
 	end)
 	
 	if not AutoUpdate.update_state then
-		sampAddChatMessage("{00ff00}RebyteTools {00b7ff}for RadmirRP. {ffffff}Загружен!", -1)
-		sampAddChatMessage("Активация ---> {eefa05}/rbt, {ffffff}Перезагрузить скрипт - {fffb00}/rbtr", -1)
+		sampAddChatMessage("{00ff00}RebyteTools {ffffff}[v".. AutoUpdate.script_vers_text .. "] - {eefa05}/rbt, {ffffff}релоад - {fffb00}/rbtr", -1)
 	end
 
 	--Потоки
