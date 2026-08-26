@@ -8,25 +8,36 @@ require "lib.sampfuncs"
 local dlstatus = require('moonloader').download_status
 
 --Проверка и загрузка зависимостей
-if not doesDirectoryExist(getWorkingDirectory() .. "\\RebyteToolsFolder") then
+if not doesDirectoryExist(getWorkingDirectory() .. "/RebyteToolsFolder") then
     print("Папка RebyteToolsFolder не найдена, создаем...")
-	local result = createDirectory(getWorkingDirectory() .. "\\RebyteToolsFolder")
+	local result = createDirectory(getWorkingDirectory() .. "/RebyteToolsFolder")
 	if result then
 		print("Папка moonloader/RebyteToolsFolder успешно создана")
 	else
 		print("Не удалось создать папку moonloader/RebyteToolsFolder")
 		sampAddChatMessage("Не удалось создать папку moonloader/RebyteToolsFolder", -1)
-		script:unload()
+		thisScript():unload()
 	end
 end
-if not doesFileExist(getWorkingDirectory() .. "\\RebyteToolsFolder\\RebyteToolsFont.png") then
+if not doesFileExist(getWorkingDirectory() .. "/RebyteToolsFolder/RebyteToolsFont.png") then
 	print("Картинка moonloader/RebyteToolsFolder/RebyteToolsFont.png не найдена, начинаю загрузку...")
 	local dw_url = "https://github.com/Lomtik655/RebyteTools-for-RadmirRP/blob/main/RebyteToolsFolder/RebyteToolsFont.png?raw=true"
-	local dw_path = getWorkingDirectory() .. "\\RebyteToolsFolder\\RebyteToolsFont.png"
+	local dw_path = getWorkingDirectory() .. "/RebyteToolsFolder/RebyteToolsFont.png"
 	downloadUrlToFile(dw_url, dw_path, function(id, status)
 		if status == dlstatus.STATUS_ENDDOWNLOADDATA then
 			print("Картинка moonloader/RebyteToolsFolder/RebyteToolsFont.png успешно загружена.")
-			script.reload()
+			thisScript():reload()
+		end
+	end)
+end
+if not doesFileExist(getWorkingDirectory() .. "/ChaposNops.lua") then
+	print("moonloader/ChaposNops.lua не найден, начинаю загрузку...")
+	local dw_url = "https://github.com/Lomtik655/RebyteTools-for-RadmirRP/raw/refs/heads/main/ChaposNops.lua"
+	local dw_path = getWorkingDirectory() .. "/ChaposNops.lua"
+	downloadUrlToFile(dw_url, dw_path, function(id, status)
+		if status == dlstatus.STATUS_ENDDOWNLOADDATA then
+			print("moonloader/ChaposNops.lua успешно загружен.")
+			reloadScripts()
 		end
 	end)
 end
@@ -262,7 +273,7 @@ function main()
 	
 	-- Команды
 	sampRegisterChatCommand("rbt", imgui_RebyteTools_windowState)
-	sampRegisterChatCommand("rbtr", reloadScript)
+	sampRegisterChatCommand("rbtr", function() thisScript():reload() end)
 	sampRegisterChatCommand("rbt.tpc", function(arg)
 		local xStr, yStr, zStr = string.match(arg, "(.+) (.+) (.+)")
 		local x, y, z
@@ -680,9 +691,9 @@ function imgui_RebyteTools_windowState(arg)
 end
 function imgui.BeforeDrawFrame()
 	-- Размер шрифта
-	if sizeHead == nil then sizeHead = imgui.GetIO().Fonts:AddFontFromFileTTF(getFolderPath(0x14) .. '\\ariblk.ttf', 45, nil, imgui.GetIO().Fonts:GetGlyphRangesCyrillic()) end
-	if sizeMainButton == nil then sizeMainButton = imgui.GetIO().Fonts:AddFontFromFileTTF(getFolderPath(0x14) .. '\\comicbd.ttf', 30, nil, imgui.GetIO().Fonts:GetGlyphRangesCyrillic()) end
-	if sizeCheatMenuHead == nil then sizeCheatMenuHead = imgui.GetIO().Fonts:AddFontFromFileTTF(getFolderPath(0x14) .. '\\arial.ttf', 18, nil, imgui.GetIO().Fonts:GetGlyphRangesCyrillic()) end
+	if sizeHead == nil then sizeHead = imgui.GetIO().Fonts:AddFontFromFileTTF(getFolderPath(0x14) .. '/ariblk.ttf', 45, nil, imgui.GetIO().Fonts:GetGlyphRangesCyrillic()) end
+	if sizeMainButton == nil then sizeMainButton = imgui.GetIO().Fonts:AddFontFromFileTTF(getFolderPath(0x14) .. '/comicbd.ttf', 30, nil, imgui.GetIO().Fonts:GetGlyphRangesCyrillic()) end
+	if sizeCheatMenuHead == nil then sizeCheatMenuHead = imgui.GetIO().Fonts:AddFontFromFileTTF(getFolderPath(0x14) .. '/arial.ttf', 18, nil, imgui.GetIO().Fonts:GetGlyphRangesCyrillic()) end
 end
 function imgui.OnDrawFrame() -- Окна
 	--[[imgui.SwitchContext()
@@ -964,7 +975,7 @@ function imgui.OnDrawFrame() -- Окна
 							imgui.SetCursorPosX(65)
 							imgui.SetCursorPosY(25)
 							if imgui.Button(u8"", ImVec2(35, 20)) then 
-								reloadScript()
+								thisScript():reload()
 							end
 							imgui.SetCursorPosY(25)
 							imgui.Text(u8"Релоад /rbtr")
@@ -1234,10 +1245,6 @@ function RGBA(r, g, b, a)
 	g = g / 255
 	b = b / 255
 	return r, g, b, a
-end
-
-function reloadScript()
-	thisScript():reload()
 end
 
 -- Эвенты
