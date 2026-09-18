@@ -204,6 +204,7 @@ local Fishing = {
 Fishing.Helper_buffer.v = tostring(0);
 local Pilot = {
 	SkipTable = imgui.ImBool(false);
+	AutoEngine = imgui.ImBool(false);
 }
 
 local config = inicfg.load({
@@ -235,8 +236,8 @@ Ohota.ClearGhosts.v = config.Ohota.ClearGhosts
 
 -- Версия
 local AutoUpdate = {
-	script_vers = 100;
-	script_vers_text = "1.00";
+	script_vers = 101;
+	script_vers_text = "1.01";
 	
 	update_url = "https://github.com/Lomtik655/RebyteTools-for-RadmirRP/raw/refs/heads/main/update.ini";
 	update_path = getWorkingDirectory() .. "/RebyteTools.ini";
@@ -928,7 +929,8 @@ function imgui.OnDrawFrame() -- Окна
 						imgui.EndChild()
 						
 						createChildCheatWindow(u8"Пилот", 90, 1, 315, 120)
-							if imgui.Checkbox(u8'Авто-скип таблички', Pilot.SkipTable) then end
+							if imgui.Checkbox(u8'Авто-продолжение работы', Pilot.SkipTable) then end
+							if imgui.Checkbox(u8'Авто-вкл движка', Pilot.AutoEngine) then end
 						imgui.EndChild()
 						
 						createChildCheatWindow(u8"Шахта", 90, 2, 315, 120)
@@ -1368,6 +1370,15 @@ function sampEvents.onServerMessage(color, text)
 			Bots.LesopilkaRamEnd = true
 		elseif string.find(text, 'У Вас есть 2 минуты для переноса распиленных брёвен на склад, иначе доступ к ним появится у остальных рабочих.', 1, true) then
 			Bots.Etap = 5
+		end
+	end
+	
+	if Pilot.AutoEngine.v then
+		if string.find(text, 'Посадка пассажиров завершена, можете выдвигаться.', 1, true) then
+			lua_thread.create(function()
+				wait(100)
+				sampSendChat("/e")
+			end)
 		end
 	end
 	
